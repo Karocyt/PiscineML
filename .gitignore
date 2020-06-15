@@ -1,0 +1,6 @@
+__pycache__
+__pytest__
+corrections
+.pytest_cache
+MANIFEST
+.vscode
