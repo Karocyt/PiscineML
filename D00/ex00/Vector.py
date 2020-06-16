@@ -1,77 +1,105 @@
-class Vector():
-    def __init__(self, values):
-        if type(values) is list:
-            self.values = values
-            self.size = len(values)
-        if type(values) is tuple:
-            values = range(values[0], values[1])
-            self.size = values[1] - values[0]
-        if type(values) is int:
-            self.size = values
-            values = range(0, values)
-        if type(values) is range:
-            self.values = [float(i) for i in values]
+#! /usr/bin/env python3
 
-    def __add__(self, v2):
-        if type(v2) is Vector:
-            if self.size == v2.size:
-                v3 = Vector(self.size)
-                for i, f in enumerate(self.values):
-                    v3.values[i] = self.values[i] + v2.values[i]
-                return v3
-            raise ValueError("vector with not same size")
-        return NotImplemented
+class Vector:
+    """Class Vector contains a 1D vector of floats of any size"""
 
-    def __radd__(self, other):
-        return NotImplemented
+    def __init__(self, param=0):
+        """ Initialize a new Vector depending on parameter"""
+        if type(param) is int:
+            self.values = [float(i) for i in range(0, param)]
+        elif type(param) is list and all(isinstance(x, (float, int)) for x in param):
+            self.values = [float(i) for i in param]
+        elif type(param) is range:
+            self.values = [float(i) for i in param]
+        elif type(param) is tuple and (len(param) == 2 and
+                                       all(isinstance(x, int) for x in param)):
+            self.values = [float(i) for i in range(param[0], param[1])]
+        else:
+            self.values = []
 
-    def __sub__(self, v2):
-        if type(v2) is Vector:
-            if self.size == v2.size:
-                v3 = Vector(self.size)
-                for i, f in enumerate(self.values):
-                    v3.values[i] = self.values[i] - v2.values[i]
-                return v3
-            raise ValueError("vector with not same size")
-        return NotImplemented
-
-    def __rsub__(self, v1):
-        return NotImplemented
-
-    def __mul__(self, v2):
-        if type(v2) is Vector:
-            if self.size == v2.size:
-                v3 = Vector(self.size)
-                for i, f in enumerate(self.values):
-                    v3.values[i] = self.values[i] * v2.values[i]
-                return sum(v3.values)
-            raise ValueError("vector with not same size")
-        if isinstance(v2, (int, float)):
-            v3 = Vector(self.size)
-            for i, f in enumerate(self.values):
-                v3.values[i] = self.values[i] * v2
-            return v3
-        return NotImplemented
-
-    def __rmul__(self, v1):
-        return self * v1
-
-    def __truediv__(self, v2):
-        if isinstance(v2, (int, float)):
-            v3 = Vector(self.size)
-            for i, f in enumerate(self.values):
-                if v2 == 0:
-                    raise ValueError("no zero div sorry")
-                v3.values[i] = self.values[i] / v2
-            return v3
-        return NotImplemented
+    @property
+    def size(self) -> int:
+        """ Returns the len of the Vector as a dynamic attribute"""
+        return len(self.values)
 
     def __str__(self):
-        txt = "(Vector [ "
-        for f in self.values:
-            txt += f"{f:.1f} "
-        txt += "])"
-        return txt
+        """ Returns a formatted string of the Vector """
+        return f"(Vector {self.values})"
+
+    def __add__(self, val):
+        if type(val) is Vector:
+            if self.size != val.size:
+                raise ValueError("Vector are of different dimentionality")
+            return Vector([(self.values[i] + val.values[i])
+                           for i in range(0, self.size)])
+        return NotImplemented
+
+    def __radd__(self, val):
+        return NotImplemented
+
+    def __sub__(self, val):
+        if type(val) is Vector:
+            if self.size != val.size:
+                return NotImplemented
+            return Vector([(self.values[i] - val.values[i])
+                           for i in range(0, self.size)])
+        return NotImplemented
+
+    def __neg__(self):
+        return Vector([-i for i in self.values])
+
+    def __rsub__(self, val):
+        return NotImplemented
+
+    def __mul__(self, val):
+        if type(val) is Vector:
+            if self.size != val.size:
+                return NotImplemented
+            return sum((self.values[i] * val.values[i])
+                       for i in range(0, self.size))
+        if type(val) is int or type(val) is float:
+            return Vector([self.values[i] * float(val)
+                           for i in range(0, self.size)])
+        return NotImplemented
+
+    def __rmul__(self, val):
+        if type(val) is int or type(val) is float:
+            return self * val
+        return NotImplemented
+
+    def __truediv__(self, val):
+        if type(val) is Vector:
+            if self.size != val.size:
+                return NotImplemented
+            return Vector([self.values[i] / val.values[i]
+                           for i in range(0, self.size)])
+        if isinstance(val, (int, float)):
+            return Vector([self.values[i] / float(val)
+                           for i in range(0, self.size)])
+        return NotImplemented
+
+    def __rtruediv__(self, val):
+        return NotImplemented
+
+    def __eq__(self, val):
+        if type(val) is Vector:
+            return self.values == val.values
+        if type(val) is int or type(val) is float:
+            if self.size == 1:
+                return val == self.values[0]
+        return False
 
     def __repr__(self):
-        return str(self)
+        """ Returns the creation string of the Vector """
+        return f"Vector({self.values})"
+
+    def __iter__(self):
+        self.n = -1
+        return self
+
+    def __next__(self):
+        if self.n < self.size - 1:
+            self.n += 1
+            return self.values[self.n]
+        else:
+            raise StopIteration
