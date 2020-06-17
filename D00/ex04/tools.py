@@ -12,7 +12,10 @@ def add_intercept(x):
     Raises:
     This function should not raise any Exception.
     """
-    if len(x.shape) is 1:
-        x = x.reshape((x.shape[0], 1))
-    intercept = np.ones((x.shape[0], 1))
-    return np.append(intercept, x, axis=1)
+    try:
+        if len(x.shape) is 1:
+            x = x.reshape((x.shape[0], 1))
+        intercept = np.ones((x.shape[0], 1))
+        return np.append(intercept, x, axis=1)
+    except:
+        return np.nan

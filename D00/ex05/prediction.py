@@ -1,4 +1,8 @@
-def simple_predict(x, theta):
+from tools import add_intercept
+import numpy as np
+
+
+def predict_(x, theta):
     """Computes the vector of prediction y_hat from two non-empty numpy.ndarray.
     Args:
     x: has to be an numpy.ndarray, a vector of dimension m * 1.
@@ -11,6 +15,6 @@ def simple_predict(x, theta):
     This function should not raise any Exception.
     """
     try:
-        return theta[0] + (theta[1] * x)
+        return np.dot(add_intercept(x), theta)
     except:
         return np.nan
