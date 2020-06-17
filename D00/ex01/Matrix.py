@@ -1,12 +1,6 @@
 #! /usr/bin/env python3
-import importlib
-import sys
 
-sys.path.append('../ex02')
-
-
-vector = importlib.import_module("vector")
-
+from Vector import Vector
 
 class Matrix:
     """Class Matrix contains a Matrix of floats of any shape"""
@@ -25,8 +19,7 @@ class Matrix:
             if type(curr) is list and all(isinstance(x, float) for x in curr):
                 sizes += [len(curr)]
                 return tuple(s for s in sizes)
-            raise ValueError(
-                "This Matrix does not contains only floats ({curr[0]})")
+            return None
 
         if type(param) is list and all(isinstance(x, list) for x in param):
             self.data = param
@@ -37,7 +30,7 @@ class Matrix:
             self.data = []
             for i in range(param[0]):
                 self.data += [[0.0 for j in range(param[1])]]
-        elif type(param) is vector.Vector:
+        elif type(param) is Vector:
             self.data = [[nb] for nb in param.values]  # [param.values]#
         else:
             raise ValueError("A Matrix can only be initialized "
@@ -53,6 +46,7 @@ class Matrix:
         mat = ",\n    ".join(str(x) for x in self.data)
         return f"Matrix([\n    {mat}\n    ])"
 
+    @staticmethod
     def transform(fn, data):
         """ Apply fn on each float of the matrix"""
         if type(data) is list and all(isinstance(x, list) for x in data):
@@ -81,8 +75,8 @@ class Matrix:
     def __sub__(self, val):
         if type(val) is Matrix:
             if self.shape != val.shape:
-                raise ValueError("Matrices are of different dimentionality")
-            return Matrix([[self.data[i][j] + val.data[i][j]
+                return NotImplemented
+            return Matrix([[self.data[i][j] - val.data[i][j]
                             for j in range(0, len(self.data[i]))]
                            for i in range(0, len(self.data))])
         return NotImplemented
@@ -91,7 +85,7 @@ class Matrix:
         return NotImplemented
 
     def __mul__(self, val):
-        if type(val) is vector.Vector:
+        if type(val) is Vector:
             val = Matrix(val)
         if type(val) is Matrix:
             print(self.shape, val.shape)
@@ -111,7 +105,7 @@ class Matrix:
         return NotImplemented
 
     def __rmul__(self, val):
-        if type(val) is vector.Vector:
+        if type(val) is Vector:
             return Matrix(val) * self
         return NotImplemented
 

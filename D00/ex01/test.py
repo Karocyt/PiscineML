@@ -1,8 +1,6 @@
 #! /usr/bin/env python3
 
-import importlib
-from Matrix import Matrix
-from Vector import Vector
+from Matrix import Matrix, Vector
 
 
 def test_crea():  # basic creation
@@ -22,6 +20,18 @@ def test_shape():
 def test_neg():
     assert -Matrix([[1.0, 0.0], [0.0, 1.0]]
                    ) == Matrix([[-1.0, 0.0], [0.0, -1.0]])
+
+
+def test_add():  # basic creation
+    op = (Matrix([[3.0, 4.0, 5.0]]) + Matrix([[1.0, 2.0, 3.0]]))
+    res = Matrix([[4.0, 6.0, 8.0]])
+    assert op == res
+
+
+def test_sub():  # basic creation
+    op = (Matrix([[3.0, 4.0, 5.0]]) - Matrix([[1.0, 2.0, 3.0]]))
+    res = Matrix([[2.0, 2.0, 2.0]])
+    assert op == res
 
 
 def test_git():
