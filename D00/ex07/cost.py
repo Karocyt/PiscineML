@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def cost_elem_(y, y_hat):
     """
     Description:
@@ -33,7 +34,7 @@ def cost_(y, y_hat):
     Raises:
     This function should not raise any Exception.
     """
-    if len(y) > 1 and len(y.shape) == 1 :
+    if len(y) > 1 and len(y.shape) == 1:
         print("convert")
         y_hat = y_hat.flatten()
     try:
