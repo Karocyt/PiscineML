@@ -84,7 +84,7 @@ class MyLinearRegression():
             intercept = np.ones((x.shape[0], 1))
             return np.append(intercept, x, axis=1)
         except:
-            return np.nan
+            return None
 
     def predict_(self, x):
         y_pred = np.dot(MyLinearRegression.add_intercept(x), self.thetas)
@@ -105,10 +105,9 @@ class MyLinearRegression():
         This function should not raise any Exception.
         """
         if len(y) > 1 and len(y.shape) == 1:
-            print("convert")
             y_hat = y_hat.flatten()
         try:
-            return 1.0 / (2*len(y)) * (y_hat - y)**2
+            return (y_hat - y)**2
         except:
             return None
 
@@ -121,17 +120,15 @@ class MyLinearRegression():
         y: has to be an numpy.ndarray, a vector.
         y_hat: has to be an numpy.ndarray, a vector.
         Returns:
-        26
         J_value : has to be a float.
         None if there is a dimension matching problem between X, Y or theta.
         Raises:
         This function should not raise any Exception.
         """
         if len(y) > 1 and len(y.shape) == 1:
-            print("convert")
             y_hat = y_hat.flatten()
         try:
-            return np.sum(1.0 / (2*len(y)) * (y_hat - y)**2)
+            return np.mean((y_hat - y)**2)
         except:
             return None
 
