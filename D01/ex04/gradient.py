@@ -1,6 +1,7 @@
 import numpy as np
 from tools import add_intercept
 
+
 def gradient(x, y, theta):
     """Computes a gradient vector from three non-empty numpy.ndarray, without any for-loop. The
     ,→ three arrays must have compatible dimensions.
@@ -16,9 +17,17 @@ def gradient(x, y, theta):
     Raises:
     This function should not raise any Exception.
     """
-    try:
-        x_bias = add_intercept(x)
-        y_pred = np.dot(x_bias, theta)
-        return (1/len(x)* np.dot((y_pred - y).reshape(len(y), 1).T, x_bias)).reshape(len(theta),)
-    except:
-        return None
+    # try:
+    x_bias = add_intercept(x)
+    y_pred = np.dot(x_bias, theta)
+    y_pred = y_pred.reshape(len(y),1)
+    error = y_pred - y
+    # print(y_pred)
+    # print(y)
+    # print(error)
+    error_columns = error.reshape(len(y), 1)
+    error_dot_x = np.dot(error_columns.T, x_bias)
+    grad = 1/len(x) * error_dot_x
+    return grad.reshape(len(theta),)
+    # except:
+    # return None
