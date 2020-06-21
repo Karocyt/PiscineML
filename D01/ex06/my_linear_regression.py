@@ -1,6 +1,9 @@
 #! /usr/bin/env python3
 
 import numpy as np
+from matplotlib import pyplot as plt
+import matplotlib
+matplotlib.rcParams['text.usetex'] = True
 
 
 class MyLinearRegression():
@@ -131,6 +134,34 @@ class MyLinearRegression():
             return np.mean((y_hat - y)**2)
         except:
             return None
+
+    @staticmethod
+    def plot(x, y, y_pred):
+        """Plot the data and prediction line from three non-empty numpy.ndarray.
+        Args:
+        x: has to be an numpy.ndarray, a vector of dimension m * 1.
+        y: has to be an numpy.ndarray, a vector of dimension m * 1.
+        theta: has to be an numpy.ndarray, a vector of dimension 2 * 1.
+        Returns:
+        Nothing.
+        Raises:
+        This function should not raise any Exceptions.
+        """
+        y = y.flatten()
+        x = x.flatten()
+        y_pred = y_pred.flatten()
+
+        plt.plot(x, y_pred, "b-", label="Regression line")
+
+        plt.plot([x, x], [y, y_pred], "r--")
+        plt.plot([], [], "r--", label="Error")
+        plt.plot(x, y_pred, "rx", label="$S_{predict}$(pills)")
+
+        strue = plt.plot(x, y, 'go', label="$S_{true}$(pills)")
+
+        plt.legend()
+        plt.grid(True)
+        plt.show()
 
 
 if __name__ == "__main__":
