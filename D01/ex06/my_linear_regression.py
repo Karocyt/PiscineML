@@ -50,24 +50,21 @@ class MyLinearRegression():
         Returns:
         The gradient as a numpy.ndarray, a vector of dimension 2 * 1.
         None if x, y, or theta are empty numpy.ndarray.
-        None if x, y and theta do not have compatible dimensions.
+        #None if x, y and theta do not have compatible dimensions.
         Raises:
         This function should not raise any Exception.
         """
-        # try:
+        if (type(x) is not np.ndarray or type(y) is not np.ndarray or
+                type(theta) is not np.ndarray or len(x) == 0 or len(theta) == 0):
+            return None
         x_bias = MyLinearRegression.add_intercept(x)
         y_pred = np.dot(x_bias, theta)
         y_pred = y_pred.reshape(len(y), 1)
         error = y_pred - y
-        # print(y_pred)
-        # print(y)
-        # print(error)
         error_columns = error.reshape(len(y), 1)
         error_dot_x = np.dot(error_columns.T, x_bias)
         grad = 1/len(x) * error_dot_x
         return grad.reshape(len(theta),)
-        # except:
-        # return None
 
     @staticmethod
     def add_intercept(x):
@@ -81,16 +78,17 @@ class MyLinearRegression():
         Raises:
         This function should not raise any Exception.
         """
-        try:
-            if len(x.shape) is 1:
-                x = x.reshape((x.shape[0], 1))
-            intercept = np.ones((x.shape[0], 1))
-            return np.append(intercept, x, axis=1)
-        except:
+        if type(x) is not np.ndarray or len(x) == 0:
             return None
+        if len(x.shape) is 1:
+            x = x.reshape((x.shape[0], 1))
+        intercept = np.ones((x.shape[0], 1))
+        return np.append(intercept, x, axis=1)
 
-    def predict_(self, x):
-        y_pred = np.dot(MyLinearRegression.add_intercept(x), self.thetas)
+    def predict_(self, x, thetas=None):
+        if thetas is None:
+            thetas = self.thetas
+        y_pred = np.dot(MyLinearRegression.add_intercept(x), thetas)
         return y_pred.reshape(len(y_pred), 1)
 
     @staticmethod
@@ -109,10 +107,9 @@ class MyLinearRegression():
         """
         if len(y) > 1 and len(y.shape) == 1:
             y_hat = y_hat.flatten()
-        try:
-            return (y_hat - y)**2
-        except:
+        if y_hat.shape != y.shape:
             return None
+        return (y_hat - y)**2
 
     @staticmethod
     def cost_(y_hat, y):
@@ -130,10 +127,9 @@ class MyLinearRegression():
         """
         if len(y) > 1 and len(y.shape) == 1:
             y_hat = y_hat.flatten()
-        try:
-            return np.mean((y_hat - y)**2)
-        except:
+        if y_hat.shape != y.shape:
             return None
+        return np.mean((y_hat - y)**2)
 
     @staticmethod
     def plot(x, y, y_pred):
@@ -153,7 +149,7 @@ class MyLinearRegression():
 
         plt.rcParams["font.family"] = "sans-serif"
         plt.rcParams["font.sans-serif"] = ['Tahoma',
-                               'Lucida Grande', 'Verdana', 'DejaVu Sans']
+                                           'Lucida Grande', 'Verdana', 'DejaVu Sans']
         plt.plot(x, y_pred, "g--", label="Regression line")
 
         plt.plot([x, x], [y, y_pred], "r--")
@@ -162,10 +158,39 @@ class MyLinearRegression():
 
         strue = plt.plot(x, y, 'co', label="$S_{true}(pills)$")
 
-        plt.legend(bbox_to_anchor=(0,1.02,1, 0.2), loc="lower left", mode="expand", ncol=4, frameon=False)
+        plt.legend(bbox_to_anchor=(0, 1.02, 1, 0.2),
+                   loc="lower left", mode="expand", ncol=4, frameon=False)
         plt.grid(True)
-        plt.xlabel("Quantity of blue pill (in microcrams)", **{'fontname':'Comic Sans MS'})
+        plt.xlabel("Quantity of blue pill (in microcrams)")
         plt.ylabel("Space driving score")
+        plt.show()
+
+    def plotcost(self, x, y, bias=np.linspace(-70, 70, num=6)):
+        """Plot the cost as function of the weights (theta1)
+        for different bias values (theta0)
+        """
+
+        plt.rcParams["font.family"] = "sans-serif"
+        plt.rcParams["font.sans-serif"] = ['Tahoma',
+                                           'Lucida Grande', 'Verdana', 'DejaVu Sans']
+
+        t1list = np.linspace(-40, 40, num=100)
+        greys = np.linspace(0.3, 0.9, num=len(y))
+
+        colors = [tuple((g, g, g)) for g in greys]
+        coloridx = -1
+        for i, b in enumerate(bias):
+            t0 = self.thetas[0] + b
+            coloridx += 1 
+            yline = []
+            for t1 in t1list:
+                yline += [self.cost_(self.predict_(x, np.array([t0, t1])), y)]
+            plt.plot(t1list, yline, color=colors[coloridx], label=f"J($\\theta_0$=$c_{i}$,$\\theta_1$)")
+
+        plt.legend(loc="lower right")
+        plt.grid(True)
+        plt.xlabel("$\\theta_1$")
+        plt.ylabel("cost function J($\\theta_0$,$\\theta_1$)")
         plt.show()
 
 

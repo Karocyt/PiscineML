@@ -24,6 +24,7 @@ print(linear_model1.cost_(Y_model1, Yscore))
 print(mean_squared_error(Yscore, Y_model1))
 # 57.603042857142825
 MyLR.plot(Xpill, Yscore, Y_model1)
+linear_model1.plotcost(Xpill, Yscore)
 
 print(linear_model2.cost_(Y_model2, Yscore))
 # 232.16344285714285
