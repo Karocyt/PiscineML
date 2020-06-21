@@ -151,21 +151,26 @@ class MyLinearRegression():
         x = x.flatten()
         y_pred = y_pred.flatten()
 
-        plt.plot(x, y_pred, "b-", label="Regression line")
+        plt.rcParams["font.family"] = "sans-serif"
+        plt.rcParams["font.sans-serif"] = ['Tahoma',
+                               'Lucida Grande', 'Verdana', 'DejaVu Sans']
+        plt.plot(x, y_pred, "g--", label="Regression line")
 
         plt.plot([x, x], [y, y_pred], "r--")
         plt.plot([], [], "r--", label="Error")
-        plt.plot(x, y_pred, "rx", label="$S_{predict}$(pills)")
+        plt.plot(x, y_pred, "gx", label="$S_{predict}(pills)$")
 
-        strue = plt.plot(x, y, 'go', label="$S_{true}$(pills)")
+        strue = plt.plot(x, y, 'co', label="$S_{true}(pills)$")
 
-        plt.legend()
+        plt.legend(bbox_to_anchor=(0,1.02,1, 0.2), loc="lower left", mode="expand", ncol=4, frameon=False)
         plt.grid(True)
+        plt.xlabel("Quantity of blue pill (in microcrams)", **{'fontname':'Comic Sans MS'})
+        plt.ylabel("Space driving score")
         plt.show()
 
 
 if __name__ == "__main__":
-    import numpy as np
+
     x = np.array([[12.4956442], [21.5007972], [
                  31.5527382], [48.9145838], [57.5088733]])
     y = np.array([[37.4013816], [36.1473236], [
