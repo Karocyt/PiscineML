@@ -3,6 +3,7 @@
 from TinyStatistician import TinyStatistician
 import numpy as np
 
+
 def zscore(x):
     """Computes the normalized version of a non-empty numpy.ndarray using the z-score
     ,→ standardization.
@@ -16,6 +17,7 @@ def zscore(x):
     """
     ts = TinyStatistician()
     return (x - np.mean(x)) / ts.std(x)
+
 
 if __name__ == "__main__":
     X = np.array([0, 15, -9, 7, 12, 3, -21])
