@@ -11,7 +11,7 @@ from mylinearregression import MyLinearRegression as MyLR
 # names = [print(matplotlib.font_manager.FontProperties(fname=fname).get_name()) for fname in flist]
 # print("fonts:", "\n".join(flist))
 
-data = pd.read_csv("../ressources/are_blue_pills_magics.csv")
+data = pd.read_csv("../../ressources/are_blue_pills_magics.csv")
 Xpill = np.array(data["Micrograms"]).reshape(-1, 1)
 Yscore = np.array(data["Score"]).reshape(-1, 1)
 linear_model1 = MyLR(np.array([[89.0], [-8]]))
