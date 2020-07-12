@@ -48,8 +48,11 @@ if __name__ == "__main__":
         print(model.thetas)
         print(cost)
         model.plot(x, y -i*0.5, y_pred - i*0.5)
-        # lin = np.linspace(0.0, 1.0, num=50).reshape((50, 1))
-        # plt.plot(lin, model.predict_(add_polynomial_features(lin, i + 1)), "b--", label="Regression line")
+        lin = np.linspace(x.min(), x.max(), num=100).reshape((100, 1))
+        linpol = add_polynomial_features(lin, i + 1)
+        for j in range(len(linpol[0])):
+            linpol[:, j] = minmax(linpol[:, j])
+        plt.plot(lin, model.predict_(linpol)*(y.max() - y.min()) + y.min() -i*0.5, "b--", label="Regression line")
 
     # tmp = np.concatenate([minmax(x**7), minmax(x**9)], axis=1)
     # model = MyLR(alpha=1, n_cycle=1000000) #alpha=alpha[i], n_cycle=cycles[i])
