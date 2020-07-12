@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 
-from TinyStatistician import TinyStatistician
 import numpy as np
 
 
@@ -15,7 +14,6 @@ def minmax(x):
     Raises:
     This function shouldn't raise any Exception.
     """
-    ts = TinyStatistician()
     return (x - np.min(x)) / (np.max(x) - np.min(x))
 
 
