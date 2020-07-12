@@ -15,7 +15,7 @@ class MyLinearRegression():
     def __init__(self, thetas, alpha=0.001, n_cycle=1000):
         self.alpha = alpha
         self.n_cycle = n_cycle
-        self.thetas = thetas
+        self.thetas = np.array(thetas, dtype=np.float32)
 
     def fit_(self, x, y):
         """
