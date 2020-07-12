@@ -134,8 +134,7 @@ class MyLinearRegression():
             return None
         return np.mean((y_hat - y)**2)
 
-    @staticmethod
-    def plot(x, y, y_pred):
+    def plot(self, x, y, y_pred):
         """Plot the data and prediction line from three non-empty numpy.ndarray.
         Args:
         x: has to be an numpy.ndarray, a vector of dimension m * 1.
@@ -153,6 +152,7 @@ class MyLinearRegression():
         plt.rcParams["font.family"] = "sans-serif"
         plt.rcParams["font.sans-serif"] = ['Tahoma',
                                            'Lucida Grande', 'Verdana', 'DejaVu Sans']
+        lin = np.linspace(x.min(), x.max(), num=50).reshape((50, 1))
         plt.plot(x, y_pred, "g--", label="Regression line")
 
         plt.plot([x, x], [y, y_pred], "r--")
@@ -166,7 +166,6 @@ class MyLinearRegression():
         plt.grid(True)
         plt.xlabel("Quantity of blue pill (in microcrams)")
         plt.ylabel("Space driving score")
-        plt.show()
 
     def plotcost(self, x, y, bias=np.linspace(-70, 70, num=6)):
         """Plot the cost as function of the weights (theta1)
@@ -194,7 +193,6 @@ class MyLinearRegression():
         plt.grid(True)
         plt.xlabel("$\\theta_1$")
         plt.ylabel("cost function J($\\theta_0$,$\\theta_1$)")
-        plt.show()
 
 
 if __name__ == "__main__":
