@@ -13,22 +13,58 @@ if __name__ == "__main__":
 
     y = minmax(y)
     res = []
-    alpha = [1.,
-             0.0001,
-             0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
-    cycles = [50,
-              1000000,
-              500000, 100, 100, 100, 100, 100, 100]
-    for i in range(2):
-        tmp = minmax(add_polynomial_features(x, i + 1))
-        model = MyLR(np.random.rand(len(tmp[0]) + 1), alpha=alpha[i], n_cycle=cycles[i])
+    alpha = [0.1,
+             0.1,
+             0.1,
+             0.1,
+             0.1,
+             0.1,
+             0.1,
+             0.1,
+             0.1]
+    cycles = [10000,
+              10000,
+              10000,
+              100000,
+              100000,
+              100000,
+              100000,
+              100000,
+              100000]
+    
+    model = MyLR(alpha=1, n_cycle=1000000) #alpha=alpha[i], n_cycle=cycles[i])
+    model.thetas = np.zeros(1)
+    for i in range(0, 9):
+        model.alpha, model.n_cycle = alpha[i], cycles[i]
+        tmp = add_polynomial_features(x, i + 1)
+        for j in range(len(tmp[0])):
+            tmp[:, j] = minmax(tmp[:, j])
+        #thetas = np.zeros(len(tmp[0]) + 1) #np.random.rand(len(tmp[0]) + 1)
+        model.thetas = np.zeros(len(tmp[0]) + 1)#np.concatenate([model.thetas, np.zeros(1)])
         model.fit_(tmp, y)
-        res += [MyLR.cost_(model.predict_(tmp), y)]
+        y_pred = model.predict_(tmp)
+        cost = MyLR.cost_(y_pred, y)
+        res += [cost]
         print(model.thetas)
-        print(res)
+        print(cost)
+        model.plot(x, y -i*0.5, y_pred - i*0.5)
+        # lin = np.linspace(0.0, 1.0, num=50).reshape((50, 1))
+        # plt.plot(lin, model.predict_(add_polynomial_features(lin, i + 1)), "b--", label="Regression line")
+
+    # tmp = np.concatenate([minmax(x**7), minmax(x**9)], axis=1)
+    # model = MyLR(alpha=1, n_cycle=1000000) #alpha=alpha[i], n_cycle=cycles[i])
+    # model.fit_(tmp, y)
+    # y_pred = model.predict_(tmp)
+    # res += [MyLR.cost_(y_pred, y)]
+    print(res)
+    # model.plot(x, y -10*0.5, y_pred - 10*0.5)
+
+    plt.show()
 
     for i in range(len(res)):
 
         plt.plot(res)
 
     plt.show()
+
+    print(y)
