@@ -21,6 +21,7 @@ def gradient(x, y, theta):
     x_bias = add_intercept(x)
     y_pred = np.dot(x_bias, theta)
     y_pred = y_pred.reshape(len(y),1)
+    y = y.reshape(len(y),1)
     error = y_pred - y
     # print(y_pred)
     # print(y)
