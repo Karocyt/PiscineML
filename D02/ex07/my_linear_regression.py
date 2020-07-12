@@ -12,7 +12,7 @@ class MyLinearRegression():
     My personnal linear regression class to fit like a boss.
     """
 
-    def __init__(self, thetas, alpha=0.0001, n_cycle=100000):
+    def __init__(self, thetas=None, alpha=0.0001, n_cycle=100000):
         self.alpha = alpha
         self.n_cycle = n_cycle
         self.thetas = thetas
@@ -33,10 +33,12 @@ class MyLinearRegression():
         Raises:
         This function should not raise any Exception.
         """
+        if self.thetas is None:
+            self.thetas = np.zeros(len(x[0]) + 1)
         for i in range(self.n_cycle):
             grad = MyLinearRegression.gradient(x, y, self.thetas)
             wgrad = grad*self.alpha
-            self.thetas -= wgrad.reshape((len(wgrad), 1))
+            self.thetas -= wgrad
         return self.thetas
 
     @staticmethod
