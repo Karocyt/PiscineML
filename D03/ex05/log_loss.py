@@ -31,7 +31,9 @@ def log_loss_(y, y_hat, eps=1e-15):
     Raises:
     This function should not raise any Exception.
     """
-    return log_loss_elem_(y + eps, y_hat + eps).mean()
+    y_hat1 = np.clip(y_hat, eps, 1 - eps)
+    y1 = np.clip(y, eps, 1 - eps)
+    return log_loss_elem_(y, y_hat).mean()
 
 if __name__ == "__main__":
     # Example 1:
