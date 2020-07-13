@@ -204,12 +204,7 @@ if __name__ == "__main__":
     Y = np.array([
                  [23.], [48.], [218.],
                  ])
-    mylr = MyLinearRegression(np.array([[1.],
-                                       [1.],
-                                       [1.],
-                                       [1.],
-                                       [1.]
-                                       ]), alpha=0.0001, n_cycle=400000)
+    mylr = MyLinearRegression(np.array([1., 1., 1., 1., 1.]), alpha=0.0001, n_cycle=400000)
     # Example 0:
     y_pred = mylr.predict_(X)
     print(y_pred)
